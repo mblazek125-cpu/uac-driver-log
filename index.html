@@ -3,25 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kniha Jízd</title>
-    <!-- Chart.js pro vykreslování grafu -->
+    <title>Kniha jizd pro řidiče ets 2</title>
+    <!-- Chart.js pro grafy -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* --- COMPLETE UAC / DOOM TERMINAL STYLES --- */
+        /* --- DIGITAL CYBERPUNK / NEON GRID STYLES --- */
+        :root {
+            --bg-color: #080914;
+            --card-bg: rgba(16, 18, 38, 0.85);
+            --card-header: rgba(26, 29, 60, 0.9);
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff0055;
+            --neon-yellow: #ffe600;
+            --text-main: #e2e8f0;
+            --text-muted: #8a99ad;
+            --border-color: rgba(0, 240, 255, 0.2);
+            --border-glow: rgba(0, 240, 255, 0.4);
+            --input-bg: #0d0f22;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Consolas, 'Courier New', monospace, sans-serif;
+            font-family: 'Rajdhani', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            background-color: #050000 !important;
-            color: #e0d0d0 !important;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 85, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-bottom: 30px;
         }
 
         /* --- SPLASH SCREEN --- */
@@ -31,7 +49,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #000000;
+            background: #04050a;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,45 +58,48 @@
 
         .splash-content {
             text-align: center;
-            width: 90%;
-            max-width: 400px;
+            width: 85%;
+            max-width: 380px;
         }
 
         .splash-title {
-            color: #ff0000;
-            font-size: 2rem;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px #ff0000;
-            margin-bottom: 5px;
+            color: var(--neon-cyan);
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px var(--neon-cyan);
+            margin-bottom: 4px;
         }
 
         .splash-subtitle {
-            color: #888;
+            color: var(--neon-pink);
             font-size: 0.8rem;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
         }
 
         .progress-bar-container {
             width: 100%;
-            height: 12px;
-            background: #111;
-            border: 1px solid #550000;
-            border-radius: 2px;
+            height: 6px;
+            background: var(--input-bg);
+            border-radius: 4px;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
         .progress-bar-fill {
-            width: 70%;
+            width: 85%;
             height: 100%;
-            background: linear-gradient(90deg, #880000, #ff0000);
-            box-shadow: 0 0 8px #ff0000;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
 
         .splash-log {
-            color: #ffaaaa;
+            color: var(--text-muted);
             font-size: 0.75rem;
+            letter-spacing: 1px;
         }
 
         /* --- LOGIN SCREEN --- */
@@ -88,7 +109,8 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(5, 0, 0, 0.95);
+            background: rgba(8, 9, 20, 0.95);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -96,32 +118,35 @@
         }
 
         .login-box {
-            background: #100202;
-            border: 2px solid #aa0000;
-            padding: 25px;
-            border-radius: 4px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--neon-cyan);
+            padding: 30px;
+            border-radius: 8px;
             width: 90%;
             max-width: 380px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
             text-align: center;
         }
 
         .login-box h2 {
-            color: #ff2222;
+            color: var(--neon-cyan);
+            font-size: 1.4rem;
             letter-spacing: 2px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
         }
 
         .login-sub {
-            color: #888;
-            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
             margin-bottom: 20px;
         }
 
         /* --- APP CONTAINER & HEADER --- */
         .app-container {
-            padding: 12px;
-            max-width: 1200px;
+            padding: 14px;
+            max-width: 1150px;
             margin: 0 auto;
             width: 100%;
         }
@@ -130,88 +155,102 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #120202;
-            border: 1px solid #660000;
-            padding: 10px 15px;
-            margin-bottom: 15px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .brand h1 {
-            color: #ff3333;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
         }
 
         .status-dot {
             width: 10px;
             height: 10px;
-            background: #ff0000;
+            background: var(--neon-cyan);
             border-radius: 50%;
-            box-shadow: 0 0 8px #ff0000;
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
 
         .user-info {
             font-size: 0.85rem;
-            color: #ccc;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
         }
 
         #currentDriverDisplay {
-            color: #ffaa00;
+            color: var(--neon-yellow);
             font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(255, 230, 0, 0.4);
         }
 
-        /* --- STATS GRID --- */
+        /* --- STATS DASHBOARD --- */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
         }
 
         .stat-card {
-            background: #0f0202;
-            border: 1px solid #440000;
-            border-left: 3px solid #cc0000;
-            padding: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
+            transition: border-color 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--neon-cyan);
         }
 
         .stat-title {
-            font-size: 0.65rem;
-            color: #aaa;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .stat-value {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #ffdd88;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
         }
 
         /* --- PANELS & LAYOUT --- */
         .main-content {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 18px;
         }
 
         .grid-2col {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 15px;
+            gap: 18px;
         }
 
         @media (min-width: 768px) {
@@ -221,40 +260,48 @@
         }
 
         .panel {
-            background: #0d0101;
-            border: 1px solid #3d0000;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .highlight-panel {
-            border: 1px solid #ff2222 !important;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+            border: 1px solid var(--neon-pink) !important;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.15) !important;
         }
 
         .panel-header {
-            background: #180303;
-            color: #ff4444;
-            font-size: 0.8rem;
-            font-weight: bold;
-            padding: 8px 12px;
-            border-bottom: 1px solid #440000;
-            letter-spacing: 0.5px;
+            background: var(--card-header);
+            color: var(--neon-cyan);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
         }
 
         .panel-body {
-            padding: 12px;
+            padding: 16px;
         }
 
         /* --- FORMS & INPUTS --- */
         .input-group {
-            margin-bottom: 10px;
+            margin-bottom: 14px;
             text-align: left;
         }
 
         .input-group label {
             display: block;
-            font-size: 0.7rem;
-            color: #aaa;
-            margin-bottom: 4px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         input[type="text"],
@@ -263,24 +310,25 @@
         .uac-select,
         .uac-input-search {
             width: 100%;
-            padding: 8px 10px;
-            background: #040000;
-            border: 1px solid #550000;
-            color: #ffaaaa;
-            font-size: 0.85rem;
+            padding: 10px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.9rem;
             outline: none;
-            border-radius: 2px;
+            border-radius: 4px;
+            transition: all 0.2s;
         }
 
         input:focus,
         .uac-select:focus {
-            border-color: #ff0000;
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
         .form-row {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
@@ -292,47 +340,49 @@
         /* --- BUTTONS --- */
         .btn-primary {
             width: 100%;
-            padding: 9px;
-            background: #880000;
-            color: #ffffff;
+            padding: 12px;
+            background: linear-gradient(90deg, #00a8ff, var(--neon-cyan));
+            color: #04050a;
             border: none;
-            font-weight: bold;
-            font-size: 0.8rem;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 0.85rem;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             margin-top: 5px;
+            text-transform: uppercase;
         }
 
         .btn-primary:hover {
-            background: #bb0000;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            transform: translateY(-1px);
         }
 
-        .btn-success-style {
-            background: #a60000 !important;
-            border: 1px solid #ff3333 !important;
-            margin-top: 10px !important;
-            font-size: 0.9rem !important;
-            padding: 12px !important;
+        .btn-pink {
+            background: linear-gradient(90deg, #d6004c, var(--neon-pink)) !important;
+            color: #fff !important;
         }
 
-        .btn-success-style:hover {
-            background: #d60000 !important;
-            box-shadow: 0 0 10px #ff0000;
+        .btn-pink:hover {
+            box-shadow: 0 0 15px var(--neon-pink) !important;
         }
 
         .btn-danger-small {
-            background: #550000;
-            color: #ffaaaa;
-            border: 1px solid #880000;
-            padding: 3px 8px;
-            font-size: 0.7rem;
+            background: rgba(255, 0, 85, 0.15);
+            color: var(--neon-pink);
+            border: 1px solid var(--neon-pink);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .btn-danger-small:hover {
-            background: #880000;
+            background: var(--neon-pink);
             color: #fff;
+            box-shadow: 0 0 10px var(--neon-pink);
         }
 
         /* --- TABLES --- */
@@ -343,42 +393,45 @@
         .uac-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.75rem;
+            font-size: 0.82rem;
             text-align: left;
         }
 
         .uac-table th {
-            background: #1a0303;
-            color: #ffaa00;
-            padding: 8px;
-            border-bottom: 1px solid #ff0000;
+            background: var(--card-header);
+            color: var(--neon-cyan);
+            padding: 10px 12px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
             white-space: nowrap;
+            letter-spacing: 0.5px;
         }
 
         .uac-table td {
-            padding: 8px;
-            border-bottom: 1px solid #2a0000;
-            color: #dddddd;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
             white-space: nowrap;
         }
 
         .empty-msg {
-            color: #666;
-            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
             font-style: italic;
             text-align: center;
-            padding: 10px 0;
+            padding: 15px 0;
         }
 
         .calc-result {
-            font-size: 0.8rem;
-            color: #ccaa33;
+            font-size: 0.85rem;
+            color: var(--text-muted);
             margin-top: 10px;
         }
 
         .highlight {
-            color: #ffffff;
+            color: var(--neon-yellow);
             font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 230, 0, 0.3);
         }
 
         .hidden {
@@ -391,25 +444,25 @@
     <!-- SPLASH SCREEN -->
     <div id="splashScreen" class="splash-screen">
         <div class="splash-content">
-            <h1 class="splash-title">UAC TERMINAL</h1>
-            <p class="splash-subtitle">INITIALIZING DISPATCH SYSTEM...</p>
+            <h1 class="splash-title">Kniha Jizd</h1>
+            <p class="splash-subtitle">SYSTEM INITIALIZATION // V3.0</p>
             <div class="progress-bar-container">
                 <div id="splashProgress" class="progress-bar-fill"></div>
             </div>
-            <p id="splashLog" class="splash-log">CONNECTING TO UAC MAINFRAME...</p>
+            <p id="splashLog" class="splash-log">CONNECTING TO DISPATCH NETWORK...</p>
         </div>
     </div>
 
     <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="login-screen hidden">
         <div class="login-box">
-            <h2>UAC AUTHORIZATION</h2>
-            <p class="login-sub">ENTER DRIVER IDENTIFICATION</p>
+            <h2>USER AUTHENTICATION</h2>
+            <p class="login-sub">ENTER DRIVER IDENTIFIER</p>
             <div class="input-group">
-                <label for="driverNameInput">DRIVER NAME / ID</label>
-                <input type="text" id="driverNameInput" placeholder="např. Matyášek" autocomplete="off">
+                <label for="driverNameInput">DRIVER CALLSIGN / ID</label>
+                <input type="text" id="driverNameInput" placeholder="e.g. Matyášek" autocomplete="off">
             </div>
-            <button class="btn-primary" onclick="authenticateDriver()">AUTHENTICATE</button>
+            <button class="btn-primary" onclick="authenticateDriver()">INITIALIZE SESSION</button>
         </div>
     </div>
 
@@ -420,18 +473,18 @@
         <header class="app-header">
             <div class="brand">
                 <div class="status-dot"></div>
-                <h1>UAC DISPATCH - TERMINAL</h1>
+                <h1>Kniha Jízd</h1>
             </div>
             <div class="user-info">
-                <span>ŘÍDIČ: <strong id="currentDriverDisplay">MATYÁŠEK</strong></span>
-                <button class="btn-danger-small" onclick="logoutDriver()">ODHLÁSIT</button>
+                <span>OPERATOR: <strong id="currentDriverDisplay">MATYÁŠEK</strong></span>
+                <button class="btn-danger-small" onclick="logoutDriver()">LOGOUT</button>
             </div>
         </header>
 
         <!-- STATS DASHBOARD -->
         <section class="stats-grid">
             <div class="stat-card">
-                <span class="stat-title">TOTAL CREDITS / OBRAT</span>
+                <span class="stat-title">TOTAL REVENUE</span>
                 <span id="statTotalCredits" class="stat-value">0 CR</span>
             </div>
             <div class="stat-card">
@@ -439,7 +492,7 @@
                 <span id="statNetProfit" class="stat-value">0 CR</span>
             </div>
             <div class="stat-card">
-                <span class="stat-title">FLEET DISTANCE COVERED</span>
+                <span class="stat-title">TOTAL DISTANCE</span>
                 <span id="statTotalDistance" class="stat-value">0 KM / MI</span>
             </div>
             <div class="stat-card">
@@ -452,54 +505,54 @@
             
             <!-- FORMULÁŘ PRO ZÁPIS ZAKÁZKY -->
             <div class="panel highlight-panel">
-                <div class="panel-header">📝 ZÁPIS NOVÉ ZAKÁZKY (LOG JOB)</div>
+                <div class="panel-header" style="color: var(--neon-pink);">⚡ LOG NEW MISSION / JOB</div>
                 <div class="panel-body">
                     <form id="jobForm" onsubmit="saveJob(event)">
                         <div class="form-row">
                             <div class="input-group">
-                                <label>Simulátor / Hra:</label>
+                                <label>SIMULATOR / SYSTEM:</label>
                                 <select id="jobGame" class="uac-select" required>
                                     <option value="ETS2">Euro Truck Simulator 2</option>
                                     <option value="ATS">American Truck Simulator</option>
                                 </select>
                             </div>
                             <div class="input-group">
-                                <label>Datum:</label>
+                                <label>DATE:</label>
                                 <input type="date" id="jobDate" class="uac-select" required>
                             </div>
                             <div class="input-group">
-                                <label>Tahač / Vozidlo:</label>
-                                <input type="text" id="jobTruck" placeholder="např. Scania 770 V8" required>
+                                <label>VEHICLE / TRUCK:</label>
+                                <input type="text" id="jobTruck" placeholder="e.g. Scania 770 V8" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="input-group">
-                                <label>Trasa (Odkud -> Kam):</label>
-                                <input type="text" id="jobRoute" placeholder="např. Praha -> Berlín" required>
+                                <label>ROUTE (ORIGIN -> DESTINATION):</label>
+                                <input type="text" id="jobRoute" placeholder="e.g. Praha -> Berlín" required>
                             </div>
                             <div class="input-group">
-                                <label>Náklad:</label>
-                                <input type="text" id="jobCargo" placeholder="např. Medical Supplies" required>
+                                <label>CARGO TYPE:</label>
+                                <input type="text" id="jobCargo" placeholder="e.g. High Value Electronics" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="input-group">
-                                <label>Ujetá vzdálenost (km / mi):</label>
-                                <input type="number" id="jobDistance" placeholder="např. 650" min="1" required>
+                                <label>DISTANCE (KM / MI):</label>
+                                <input type="number" id="jobDistance" placeholder="e.g. 650" min="1" required>
                             </div>
                             <div class="input-group">
-                                <label>Výdělek (CR / € / $):</label>
-                                <input type="number" id="jobRevenue" placeholder="např. 25000" min="0" required>
+                                <label>REVENUE (CR / € / $):</label>
+                                <input type="number" id="jobRevenue" placeholder="e.g. 25000" min="0" required>
                             </div>
                             <div class="input-group">
-                                <label>Spotřebované palivo (L / Gal):</label>
-                                <input type="number" id="jobFuel" placeholder="např. 210" min="0" required>
+                                <label>FUEL CONSUMED (L / GAL):</label>
+                                <input type="number" id="jobFuel" placeholder="e.g. 210" min="0" required>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-primary btn-success-style">🚀 ODESLAT ZAKÁZKU DO UAC MAINFRAME</button>
+                        <button type="submit" class="btn-primary btn-pink">🚀 COMMIT MISSION TO MAINFRAME</button>
                     </form>
                 </div>
             </div>
@@ -507,17 +560,17 @@
             <!-- TOP SECTION: CHART & LEADERBOARD -->
             <div class="grid-2col">
                 <div class="panel">
-                    <div class="panel-header">📊 REVENUE RADAR / VÝVOJ TRŽEB</div>
+                    <div class="panel-header">📊 REVENUE RADAR</div>
                     <div class="panel-body">
                         <canvas id="revenueChart" style="max-height: 180px;"></canvas>
                     </div>
                 </div>
 
                 <div class="panel">
-                    <div class="panel-header">🏆 TOP SLAYERS (NEJLEPŠÍ ŘÍDIČI)</div>
+                    <div class="panel-header">🏆 TOP OPERATORS</div>
                     <div class="panel-body">
                         <div id="leaderboardContainer" class="table-responsive">
-                            <p class="empty-msg">NO SLAYER DATA FOUND</p>
+                            <p class="empty-msg">NO LEADERBOARD DATA AVAILABLE</p>
                         </div>
                     </div>
                 </div>
@@ -527,34 +580,34 @@
             <div class="grid-2col">
                 <!-- CALCULATOR -->
                 <div class="panel">
-                    <div class="panel-header">🧮 UAC QUOTE CALCULATOR</div>
+                    <div class="panel-header">🧮 QUOTE CALCULATOR</div>
                     <div class="panel-body">
                         <div class="form-row">
                             <div class="input-group">
-                                <label>Vzdálenost (km / mi):</label>
+                                <label>DISTANCE (KM / MI):</label>
                                 <input type="number" id="calcDistance" value="850" oninput="calculateQuote()">
                             </div>
                             <div class="input-group">
-                                <label>Typ nákladu:</label>
+                                <label>CARGO CLASS:</label>
                                 <select id="calcCargo" class="uac-select" onchange="calculateQuote()">
                                     <option value="1.0">Standard Cargo</option>
                                     <option value="1.4">Heavy Machinery (+40%)</option>
                                     <option value="1.8">Hazardous / ADR (+80%)</option>
-                                    <option value="2.5">UAC Class-A Anomaly (+150%)</option>
+                                    <option value="2.5">UAC Special Delivery (+150%)</option>
                                 </select>
                             </div>
                         </div>
-                        <p class="calc-result">Doporučená cena zakázky: <strong id="calcResult" class="highlight">0 CREDITS</strong></p>
+                        <p class="calc-result">ESTIMATED PAYOUT: <strong id="calcResult" class="highlight">0 CREDITS</strong></p>
                     </div>
                 </div>
 
                 <!-- CONVOY DEPLOYMENT -->
                 <div class="panel">
-                    <div class="panel-header">🚨 CONVOY / MISSION DEPLOYMENT</div>
+                    <div class="panel-header">🚨 CONVOY DEPLOYMENT</div>
                     <div class="panel-body">
                         <div class="form-row">
                             <div class="input-group">
-                                <input type="text" id="convoyName" placeholder="Název mise / konvoje">
+                                <input type="text" id="convoyName" placeholder="Mission Name">
                             </div>
                             <div class="input-group">
                                 <input type="date" id="convoyDate" class="uac-select">
@@ -562,10 +615,10 @@
                         </div>
                         <div class="form-row">
                             <div class="input-group">
-                                <input type="text" id="convoyRoute" placeholder="Trasa (např. Praha -> Oslo)">
+                                <input type="text" id="convoyRoute" placeholder="Route (e.g. Praha -> Oslo)">
                             </div>
                             <div class="input-group">
-                                <input type="text" id="convoyServer" placeholder="Server (Simulation 1)">
+                                <input type="text" id="convoyServer" placeholder="Server (e.g. Simulation 1)">
                             </div>
                         </div>
                         <button class="btn-primary" onclick="addConvoy()">DEPLOY MISSION</button>
@@ -573,35 +626,35 @@
                 </div>
             </div>
 
-            <!-- LOGBOOK TABLES -->
+            <!-- SEARCH DATABASE -->
             <div class="panel">
-                <div class="panel-header">🔍 SEARCH DATABASE</div>
+                <div class="panel-header">🔍 DATABASE QUERY</div>
                 <div class="panel-body">
-                    <input type="text" id="searchInput" class="uac-input-search" placeholder="Hledat řidiče, náklad, město..." onkeyup="filterLogs()">
+                    <input type="text" id="searchInput" class="uac-input-search" placeholder="Search by driver, cargo, city..." onkeyup="filterLogs()">
                 </div>
             </div>
 
             <!-- ETS 2 TABLE -->
             <div class="panel">
-                <div class="panel-header">🚚 EURO TRUCK SIMULATOR 2 - LOGBOOK ZAKÁZEK</div>
+                <div class="panel-header">🚚 EURO TRUCK SIMULATOR 2 - LOGS</div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="uac-table">
                             <thead>
                                 <tr>
-                                    <th>DATUM</th>
-                                    <th>ŘÍDIČ</th>
-                                    <th>TAHAČ</th>
-                                    <th>TRASA</th>
-                                    <th>NÁKLAD</th>
-                                    <th>UJETO</th>
-                                    <th>VÝDĚLEK</th>
-                                    <th>PALIVO</th>
-                                    <th>AKCE</th>
+                                    <th>DATE</th>
+                                    <th>DRIVER</th>
+                                    <th>TRUCK</th>
+                                    <th>ROUTE</th>
+                                    <th>CARGO</th>
+                                    <th>DISTANCE</th>
+                                    <th>REVENUE</th>
+                                    <th>FUEL</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="ets2TableBody">
-                                <tr><td colspan="9" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td></tr>
+                                <tr><td colspan="9" class="empty-msg">NO MISSIONS FOUND FOR ETS2</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -610,25 +663,25 @@
 
             <!-- ATS TABLE -->
             <div class="panel">
-                <div class="panel-header">🇺🇸 AMERICAN TRUCK SIMULATOR - LOGBOOK ZAKÁZEK</div>
+                <div class="panel-header">🇺🇸 AMERICAN TRUCK SIMULATOR - LOGS</div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="uac-table">
                             <thead>
                                 <tr>
-                                    <th>DATUM</th>
-                                    <th>ŘÍDIČ</th>
-                                    <th>TAHAČ</th>
-                                    <th>TRASA</th>
-                                    <th>NÁKLAD</th>
-                                    <th>UJETO</th>
-                                    <th>VÝDĚLEK</th>
-                                    <th>PALIVO</th>
-                                    <th>AKCE</th>
+                                    <th>DATE</th>
+                                    <th>DRIVER</th>
+                                    <th>TRUCK</th>
+                                    <th>ROUTE</th>
+                                    <th>CARGO</th>
+                                    <th>DISTANCE</th>
+                                    <th>REVENUE</th>
+                                    <th>FUEL</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="atsTableBody">
-                                <tr><td colspan="9" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td></tr>
+                                <tr><td colspan="9" class="empty-msg">NO MISSIONS FOUND FOR ATS</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -638,7 +691,7 @@
         </div>
     </div>
 
-    <!-- LOGIC SCRIPT -->
+    <!-- SCRIPT -->
     <script>
         let currentDriver = "MATYÁŠEK";
         let jobsData = JSON.parse(localStorage.getItem('uac_jobs')) || [];
@@ -648,7 +701,7 @@
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
                 if (splash) splash.classList.add('hidden');
-            }, 1000);
+            }, 800);
             calculateQuote();
             renderAll();
         });
@@ -684,7 +737,7 @@
         }
 
         function deleteJob(id) {
-            if(confirm('Opravdu chceš smazat tuto zakázku z databáze?')) {
+            if(confirm('Opravdu chceš smazat tuto zakázku?')) {
                 jobsData = jobsData.filter(job => job.id !== id);
                 localStorage.setItem('uac_jobs', JSON.stringify(jobsData));
                 renderAll();
@@ -704,7 +757,7 @@
             const atsJobs = jobsData.filter(j => j.game === 'ATS');
 
             if (ets2Jobs.length === 0) {
-                ets2Body.innerHTML = '<tr><td colspan="9" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td></tr>';
+                ets2Body.innerHTML = '<tr><td colspan="9" class="empty-msg">NO MISSIONS FOUND FOR ETS2</td></tr>';
             } else {
                 ets2Body.innerHTML = ets2Jobs.map(j => `
                     <tr>
@@ -714,7 +767,7 @@
                         <td>${j.route}</td>
                         <td>${j.cargo}</td>
                         <td>${j.distance.toLocaleString()} km</td>
-                        <td style="color: #55ff55;">${j.revenue.toLocaleString()} CR</td>
+                        <td style="color: var(--neon-cyan); font-weight: bold;">${j.revenue.toLocaleString()} CR</td>
                         <td>${j.fuel} L</td>
                         <td><button class="btn-danger-small" onclick="deleteJob(${j.id})">❌</button></td>
                     </tr>
@@ -722,7 +775,7 @@
             }
 
             if (atsJobs.length === 0) {
-                atsBody.innerHTML = '<tr><td colspan="9" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td></tr>';
+                atsBody.innerHTML = '<tr><td colspan="9" class="empty-msg">NO MISSIONS FOUND FOR ATS</td></tr>';
             } else {
                 atsBody.innerHTML = atsJobs.map(j => `
                     <tr>
@@ -732,7 +785,7 @@
                         <td>${j.route}</td>
                         <td>${j.cargo}</td>
                         <td>${j.distance.toLocaleString()} mi</td>
-                        <td style="color: #55ff55;">$${j.revenue.toLocaleString()}</td>
+                        <td style="color: var(--neon-cyan); font-weight: bold;">$${j.revenue.toLocaleString()}</td>
                         <td>${j.fuel} Gal</td>
                         <td><button class="btn-danger-small" onclick="deleteJob(${j.id})">❌</button></td>
                     </tr>
