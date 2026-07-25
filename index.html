@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAC DRIVER TERMINAL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. NAČÍTACÍ OBRAZOVKA (SPLASH SCREEN) -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <h1 class="splash-title">UAC OS v4.66</h1>
+            <p class="splash-subtitle">INITIALIZING DRIVER MODULE...</p>
+            <div class="progress-bar-container">
+                <div id="splashProgressBar" class="progress-bar-fill"></div>
+            </div>
+            <div id="splashLog" class="splash-log">BOOTING...</div>
+        </div>
+    </div>
+
+    <!-- 2. PŘIHLAŠOVACÍ OKÉNKO -->
+    <div id="loginScreen" class="login-screen hidden">
+        <div class="login-box">
+            <h2>PŘIHLÁŠENÍ ŘIDIČE</h2>
+            <p class="login-sub">Zadejte své identifikační údaje</p>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="driverName">Jméno řidiče / Nick:</label>
+                    <input type="text" id="driverName" placeholder="např. Matyášek" required>
+                </div>
+                <div class="input-group">
+                    <label for="driverPin">PIN / Heslo:</label>
+                    <input type="password" id="driverPin" placeholder="****" required>
+                </div>
+                <button type="submit" class="btn-primary">VSTOUPIT DO SYSTÉMU</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. HLAVNÍ APLIKACE (PLNÝ TERMINÁL) -->
+    <div id="appContent" class="app-layout hidden">
+        <!-- HORNI LIŠTA -->
+        <header class="app-header">
+            <div class="brand">
+                <span class="status-dot"></span>
+                <h1>UAC DRIVER TERMINAL</h1>
+            </div>
+            <div class="user-info">
+                Řidič: <span id="loggedDriver">-</span>
+                <button id="btnLogout" class="btn-danger-small">Odhlásit</button>
+            </div>
+        </header>
+
+        <!-- OBSAHOVÁ ČÁST -->
+        <main class="main-content">
+            <!-- RYCHLÉ STATISTIKY -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-title">CELKEM KM</span>
+                    <span id="totalKm" class="stat-value">0 km</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">CELKOVÝ VÝDĚLEK</span>
+                    <span id="totalEarned" class="stat-value">0 €</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">POČET JÍZD</span>
+                    <span id="totalJobs" class="stat-value">0</span>
+                </div>
+            </div>
+
+            <!-- FORMULÁŘ JÍZDY -->
+            <div class="panel">
+                <div class="panel-header">NOVÝ ZÁZNAM JÍZDY</div>
+                <form id="jobForm" class="panel-body">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Odkud (Město):</label>
+                            <input type="text" id="fromCity" placeholder="Praha" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Kam (Město):</label>
+                            <input type="text" id="toCity" placeholder="Berlín" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Náklad / Materiál:</label>
+                        <input type="text" id="cargo" placeholder="Elektronika" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Vzdálenost (km):</label>
+                            <input type="number" id="distance" placeholder="350" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Odměna (€):</label>
+                            <input type="number" id="income" placeholder="12500" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">+ ZAPSAT JÍZDU</button>
+                </form>
+            </div>
+
+            <!-- SEZNAM ZÁZNAMŮ -->
+            <div class="panel">
+                <div class="panel-header">HISTORIE JÍZD</div>
+                <div class="panel-body">
+                    <div id="jobsList" class="jobs-list">
+                        <p class="empty-msg">Žádné zaznamenané jízdy.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

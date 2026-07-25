@@ -1,0 +1,307 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Consolas', 'Courier New', monospace;
+}
+
+body {
+    background-color: #08090c;
+    color: #00ff66;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- SPLASH SCREEN --- */
+.splash-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #050508;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.splash-content {
+    text-align: center;
+    width: 85%;
+    max-width: 400px;
+}
+
+.splash-title {
+    font-size: 1.8rem;
+    color: #00ff66;
+    text-shadow: 0 0 10px #00ff66;
+}
+
+.splash-subtitle {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 16px;
+    background: #111319;
+    border: 1px solid #00ff66;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: #00ff66;
+    box-shadow: 0 0 10px #00ff66;
+    transition: width 0.08s linear;
+}
+
+.splash-log {
+    font-size: 0.75rem;
+    color: #00ff66;
+}
+
+/* --- LOGIN SCREEN --- */
+.login-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(5, 6, 8, 0.98);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.login-box {
+    background: #10121a;
+    border: 2px solid #00ff66;
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+    padding: 25px 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+}
+
+.login-box h2 {
+    color: #00ff66;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.login-sub {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* --- HLAVNÍ TERMINÁL --- */
+.app-header {
+    background: #10121a;
+    border-bottom: 2px solid #00ff66;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: #00ff66;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #00ff66;
+}
+
+.brand h1 {
+    font-size: 0.95rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.user-info {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.user-info span {
+    color: #00ff66;
+    font-weight: bold;
+}
+
+.btn-danger-small {
+    background: #ff3333;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 6px;
+    font-weight: bold;
+}
+
+.main-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* KARTY STATISTIK */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.stat-card {
+    background: #10121a;
+    border: 1px solid #1f2433;
+    border-top: 2px solid #00ff66;
+    padding: 10px 5px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.stat-title {
+    display: block;
+    font-size: 0.65rem;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #00ff66;
+}
+
+/* PANELY A FORMULÁŘE */
+.panel {
+    background: #10121a;
+    border: 1px solid #00ff66;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(0, 255, 102, 0.08);
+}
+
+.panel-header {
+    background: #161924;
+    color: #00ff66;
+    padding: 10px 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-bottom: 1px solid #00ff66;
+    letter-spacing: 1px;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.input-group {
+    margin-bottom: 12px;
+    flex: 1;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    color: #00ff66;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    background: #08090c;
+    border: 1px solid #252a3b;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #00ff66;
+    box-shadow: 0 0 6px rgba(0, 255, 102, 0.4);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #00ff66;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+.btn-primary:active {
+    background: #00cc52;
+}
+
+/* SEZNAM JÍZD */
+.jobs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.empty-msg {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+}
+
+.job-card {
+    background: #08090c;
+    border-left: 3px solid #00ff66;
+    padding: 10px 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-route {
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.85rem;
+}
+
+.job-sub {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+.job-pay {
+    color: #00ff66;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
