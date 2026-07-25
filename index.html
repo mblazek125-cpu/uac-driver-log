@@ -1,239 +1,282 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UAC DISPATCH & FLEET TERMINAL</title>
+    <!-- Odkaz na externí styl -->
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js pro vykreslování grafu -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <!-- SPLASH / LOADING SCREEN -->
+    <!-- SPLASH SCREEN -->
     <div id="splashScreen" class="splash-screen">
         <div class="splash-content">
             <h1 class="splash-title">UAC TERMINAL</h1>
             <p class="splash-subtitle">INITIALIZING DISPATCH SYSTEM...</p>
             <div class="progress-bar-container">
-                <div id="progressBar" class="progress-bar-fill"></div>
+                <div id="splashProgress" class="progress-bar-fill"></div>
             </div>
             <p id="splashLog" class="splash-log">CONNECTING TO UAC MAINFRAME...</p>
         </div>
     </div>
 
-    <!-- LOGIN OVERLAY -->
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="login-screen hidden">
         <div class="login-box">
             <h2>UAC AUTHORIZATION</h2>
             <p class="login-sub">ENTER DRIVER IDENTIFICATION</p>
-            <form id="loginForm">
-                <div class="input-group">
-                    <label>DRIVER NAME / ID</label>
-                    <input type="text" id="driverNameInput" placeholder="např. Matyášek" required>
-                </div>
-                <button type="submit" class="btn-primary">AUTHENTICATE</button>
-            </form>
+            <div class="input-group">
+                <label for="driverNameInput">DRIVER NAME / ID</label>
+                <input type="text" id="driverNameInput" placeholder="např. Matyášek" autocomplete="off">
+            </div>
+            <button class="btn-primary" onclick="authenticateDriver()">AUTHENTICATE</button>
         </div>
     </div>
 
-    <!-- APP CONTAINER -->
-    <div id="app" class="app-container hidden">
-
-        <!-- TOP HEADER -->
+    <!-- MAIN APP CONTAINER -->
+    <div class="app-container">
+        
+        <!-- HEADER -->
         <header class="app-header">
             <div class="brand">
                 <div class="status-dot"></div>
                 <h1>UAC DISPATCH - TERMINAL</h1>
             </div>
             <div class="user-info">
-                🪪 ŘIDIČ: <span id="currentDriverDisplay">---</span>
-                <button id="logoutBtn" class="btn-danger-small">ODHLÁSIT</button>
+                <span>ŘÍDIČ: <strong id="currentDriverDisplay">---</strong></span>
+                <button class="btn-danger-small" onclick="logoutDriver()">ODHLÁSIT</button>
             </div>
         </header>
 
-        <main class="main-content">
+        <!-- STATS DASHBOARD -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-title">TOTAL CREDITS / OBRAT</span>
+                <span id="statTotalCredits" class="stat-value">0 CREDITS</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">ESTIMATED NET PROFIT</span>
+                <span id="statNetProfit" class="stat-value">0 CREDITS</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">FLEET DISTANCE COVERED</span>
+                <span id="statTotalDistance" class="stat-value">0 KM / MI</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">AVG PROFIT RATE</span>
+                <span id="statAvgProfit" class="stat-value">0 CR/UNIT</span>
+            </div>
+        </section>
 
-            <!-- STATS STRIP -->
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-title">TOTAL CREDITS / OBRAT</span>
-                    <span class="stat-value" id="statObrat">0 CREDITS</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-title">ESTIMATED NET PROFIT</span>
-                    <span class="stat-value" id="statZisk">0 CREDITS</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-title">FLEET DISTANCE COVERED</span>
-                    <span class="stat-value" id="statNajeto">0 KM / MI</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-title">AVG PROFIT RATE</span>
-                    <span class="stat-value" id="statRate">0 CR/UNIT</span>
-                </div>
-            </section>
-
-            <!-- TWO COLUMN GRID: RADAR & TOP SLAYERS -->
+        <div class="main-content">
+            
+            <!-- TOP SECTION: CHART & LEADERBOARD -->
             <div class="grid-2col">
-                <section class="panel">
+                <div class="panel">
                     <div class="panel-header">📊 REVENUE RADAR / VÝVOJ TRŽEB</div>
-                    <div class="panel-body chart-box">
-                        <div class="chart-placeholder">
-                            <span>1.0</span><span>0.8</span><span>0.6</span><span>0.4</span><span>0.2</span><span>0</span>
+                    <div class="panel-body">
+                        <canvas id="revenueChart" style="max-height: 180px;"></canvas>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">🏆 TOP SLAYERS (NEJLEPŠÍ ŘÍDIČI)</div>
+                    <div class="panel-body">
+                        <div id="leaderboardContainer" class="table-responsive">
+                            <p class="empty-msg">NO SLAYER DATA FOUND</p>
                         </div>
                     </div>
-                </section>
-
-                <section class="panel">
-                    <div class="panel-header">🏆 TOP SLAYERS (NEJLEPŠÍ ŘIDIČI)</div>
-                    <div class="panel-body">
-                        <p class="empty-msg">NO SLAYER DATA FOUND</p>
-                    </div>
-                </section>
+                </div>
             </div>
 
-            <!-- TWO COLUMN GRID: CALCULATOR & CONVOY -->
+            <!-- MIDDLE SECTION: CALCULATOR & CONVOYS & OUTPOST EXPENSES -->
             <div class="grid-2col">
-                <section class="panel">
+                <!-- CALCULATOR -->
+                <div class="panel">
                     <div class="panel-header">🧮 UAC QUOTE CALCULATOR</div>
                     <div class="panel-body">
-                        <div class="input-group">
-                            <label>Vzdálenost (km / mi):</label>
-                            <input type="number" placeholder="850">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Vzdálenost (km / mi):</label>
+                                <input type="number" id="calcDistance" value="850" oninput="calculateQuote()">
+                            </div>
+                            <div class="input-group">
+                                <label>Typ nákladu:</label>
+                                <select id="calcCargo" class="uac-select" onchange="calculateQuote()">
+                                    <option value="1.0">Standard Cargo</option>
+                                    <option value="1.4">Heavy Machinery (+40%)</option>
+                                    <option value="1.8">Hazardous / ADR (+80%)</option>
+                                    <option value="2.5">UAC Class-A Anomaly (+150%)</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label>Typ nákladu:</label>
-                            <select class="uac-select">
-                                <option>Standard Cargo</option>
-                                <option>High Value Cargo</option>
-                                <option>Heavy Cargo</option>
-                            </select>
-                        </div>
-                        <p class="calc-result">Doporučená cena zakázky: <span class="highlight">0 CREDITS</span></p>
+                        <p class="calc-result">Doporučená cena zakázky: <strong id="calcResult" class="highlight">0 CREDITS</strong></p>
                     </div>
-                </section>
+                </div>
 
-                <section class="panel">
+                <!-- CONVOY DEPLOYMENT -->
+                <div class="panel">
                     <div class="panel-header">🚨 CONVOY / MISSION DEPLOYMENT</div>
                     <div class="panel-body">
                         <div class="form-row">
                             <div class="input-group">
-                                <input type="text" placeholder="Název mise / konvoje">
+                                <input type="text" id="convoyName" placeholder="Název mise / konvoje">
                             </div>
                             <div class="input-group">
-                                <input type="text" placeholder="DD.MM.YYYY --:--">
+                                <input type="date" id="convoyDate" class="uac-select">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="input-group">
-                                <input type="text" placeholder="Trasa (např. Praha -> Oslo)">
+                                <input type="text" id="convoyRoute" placeholder="Trasa (např. Praha -> Oslo)">
                             </div>
                             <div class="input-group">
-                                <input type="text" placeholder="Server (Simulation 1)">
+                                <input type="text" id="convoyServer" placeholder="Server (Simulation 1)">
                             </div>
                         </div>
-                        <button class="btn-primary">DEPLOY MISSION</button>
-                        <p class="empty-msg" style="margin-top:5px;">NO CONVOY MISSION SCHEDULED</p>
+                        <button class="btn-primary" onclick="addConvoy()">DEPLOY MISSION</button>
+                        <div id="convoyList" style="margin-top: 10px;">
+                            <p class="empty-msg">NO CONVOY MISSION SCHEDULED</p>
+                        </div>
                     </div>
-                </section>
+                </div>
             </div>
 
-            <!-- OUTPOST COSTS & DAMAGES (VÝDAJE / ŠKODY) -->
-            <section class="panel">
-                <div class="panel-header">⛔ OUTPOST COSTS & DAMAGES (VÝDAJE / ŠKODY)</div>
-                <div class="panel-body">
-                    <form id="damageForm">
-                        <div class="input-group">
-                            <input type="text" placeholder="Popis výdaje (např. Oprava motoru)" required>
-                        </div>
+            <!-- EXPENSES & FLEET -->
+            <div class="grid-2col">
+                <div class="panel">
+                    <div class="panel-header">⛔ OUTPOST COSTS & DAMAGES (VÝDAJE / ŠKODY)</div>
+                    <div class="panel-body">
                         <div class="form-row">
                             <div class="input-group">
-                                <input type="number" placeholder="Částka (CR)" required>
+                                <input type="text" id="expenseDesc" placeholder="Popis výdaje (např. Oprava motoru)">
                             </div>
                             <div class="input-group">
-                                <select class="uac-select">
-                                    <option>🛠 Servis & Opravy</option>
-                                    <option>⛽ Palivo</option>
-                                    <option>⚠️ Pokuta / Škoda</option>
-                                </select>
+                                <input type="number" id="expenseAmount" placeholder="Částka (CR)">
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary">ZAPSAT ŠKODU</button>
-                    </form>
+                        <div class="input-group">
+                            <select id="expenseCategory" class="uac-select">
+                                <option value="Servis">Servis & Opravy</option>
+                                <option value="Palivo">Tankování</option>
+                                <option value="Pokuta">Pokuty & Poplatky</option>
+                                <option value="Ostatní">Ostatní škody</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="addExpense()">ZAPSAT ŠKODU</button>
+                    </div>
                 </div>
-            </section>
 
-            <!-- UAC HEAVY FLEET & INTEGRITY -->
-            <section class="panel">
-                <div class="panel-header">⚙️ UAC HEAVY FLEET & INTEGRITY (STAV VOZIDEL)</div>
-                <div class="panel-body">
-                    <p class="empty-msg">NO HEAVY VEHICLES REGISTERED</p>
+                <div class="panel">
+                    <div class="panel-header">⚙️ UAC HEAVY FLEET & INTEGRITY (STAV VOZIDEL)</div>
+                    <div class="panel-body">
+                        <div id="fleetStatusContainer">
+                            <p class="empty-msg">NO HEAVY VEHICLES REGISTERED</p>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- SEARCH DATABASE -->
-            <section class="panel">
+            <!-- LOGBOOK TABLES -->
+            <div class="panel">
                 <div class="panel-header">🔍 SEARCH DATABASE</div>
                 <div class="panel-body">
-                    <input type="text" class="uac-input-search" placeholder="Hledat řidiče, náklad, město...">
+                    <input type="text" id="searchInput" class="uac-input-search" placeholder="Hledat řidiče, náklad, město..." onkeyup="filterLogs()">
                 </div>
-            </section>
+            </div>
 
-            <!-- LOGBOOK ETS 2 -->
-            <section class="panel">
+            <!-- ETS 2 TABLE -->
+            <div class="panel">
                 <div class="panel-header">🚚 EURO TRUCK SIMULATOR 2 - LOGBOOK ZAKÁZEK</div>
-                <div class="panel-body table-responsive">
-                    <table class="uac-table">
-                        <thead>
-                            <tr>
-                                <th>DATUM</th>
-                                <th>ŘIDIČ</th>
-                                <th>TAHAČ</th>
-                                <th>TRASA</th>
-                                <th>NÁKLAD</th>
-                                <th>UJETO</th>
-                                <th>VÝDĚLEK</th>
-                                <th>PALIVO</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ets2TableBody">
-                            <tr>
-                                <td colspan="8" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="uac-table">
+                            <thead>
+                                <tr>
+                                    <th>DATUM</th>
+                                    <th>ŘÍDIČ</th>
+                                    <th>TAHAČ</th>
+                                    <th>TRASA</th>
+                                    <th>NÁKLAD</th>
+                                    <th>UJETO</th>
+                                    <th>VÝDĚLEK</th>
+                                    <th>PALIVO</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ets2TableBody">
+                                <tr><td colspan="8" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- LOGBOOK ATS -->
-            <section class="panel">
+            <!-- ATS TABLE -->
+            <div class="panel">
                 <div class="panel-header">🇺🇸 AMERICAN TRUCK SIMULATOR - LOGBOOK ZAKÁZEK</div>
-                <div class="panel-body table-responsive">
-                    <table class="uac-table">
-                        <thead>
-                            <tr>
-                                <th>DATUM</th>
-                                <th>ŘIDIČ</th>
-                                <th>TAHAČ</th>
-                                <th>TRASA</th>
-                                <th>NÁKLAD</th>
-                                <th>UJETO</th>
-                                <th>VÝDĚLEK</th>
-                                <th>PALIVO</th>
-                            </tr>
-                        </thead>
-                        <tbody id="atsTableBody">
-                            <tr>
-                                <td colspan="8" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="uac-table">
+                            <thead>
+                                <tr>
+                                    <th>DATUM</th>
+                                    <th>ŘÍDIČ</th>
+                                    <th>TAHAČ</th>
+                                    <th>TRASA</th>
+                                    <th>NÁKLAD</th>
+                                    <th>UJETO</th>
+                                    <th>VÝDĚLEK</th>
+                                    <th>PALIVO</th>
+                                </tr>
+                            </thead>
+                            <tbody id="atsTableBody">
+                                <tr><td colspan="8" class="empty-msg">ŽÁDNÉ ZAKÁZKY PRO TUTO HRU NENALEZENY</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-        </main>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- APPLICATION SCRIPT -->
+    <script>
+        // Init logic for UI
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splashScreen');
+                if (splash) splash.classList.add('hidden');
+            }, 1200);
+            calculateQuote();
+        });
+
+        function calculateQuote() {
+            const dist = parseFloat(document.getElementById('calcDistance').value) || 0;
+            const mult = parseFloat(document.getElementById('calcCargo').value) || 1.0;
+            const total = Math.round(dist * 35 * mult);
+            document.getElementById('calcResult').innerText = total.toLocaleString() + " CREDITS";
+        }
+
+        function authenticateDriver() {
+            const name = document.getElementById('driverNameInput').value.trim();
+            if (name) {
+                document.getElementById('currentDriverDisplay').innerText = name.toUpperCase();
+                document.getElementById('loginScreen').classList.add('hidden');
+            }
+        }
+
+        function logoutDriver() {
+            document.getElementById('currentDriverDisplay').innerText = '---';
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        function addConvoy() { alert('Konvoj zaregistrován!'); }
+        function addExpense() { alert('Výdaj zapsán!'); }
+        function filterLogs() {}
+    </script>
 </body>
 </html>

@@ -1,14 +1,14 @@
-/* --- GLOBAL RESETS & BASE STYLES --- */
+/* --- UAC / DOOM TERMINAL COMPLETE STYLESHEET --- */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Segoe UI', Consolas, 'Courier New', monospace, sans-serif;
 }
 
 body {
-    background-color: #050000;
-    color: #e0d0d0;
+    background-color: #050000 !important;
+    color: #e0d0d0 !important;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -60,17 +60,15 @@ body {
 }
 
 .progress-bar-fill {
-    width: 30%;
+    width: 60%;
     height: 100%;
     background: linear-gradient(90deg, #880000, #ff0000);
     box-shadow: 0 0 8px #ff0000;
-    transition: width 0.3s ease;
 }
 
 .splash-log {
     color: #ffaaaa;
     font-size: 0.75rem;
-    font-family: monospace;
 }
 
 /* --- LOGIN SCREEN --- */
@@ -246,6 +244,7 @@ body {
 
 input[type="text"],
 input[type="number"],
+input[type="date"],
 .uac-select,
 .uac-input-search {
     width: 100%;
@@ -339,18 +338,6 @@ input:focus,
     font-style: italic;
     text-align: center;
     padding: 10px 0;
-}
-
-/* --- CHART PLACEHOLDER & UTILITIES --- */
-.chart-placeholder {
-    height: 120px;
-    border: 1px dashed #440000;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 10px;
-    color: #555;
-    font-size: 0.65rem;
 }
 
 .calc-result {
